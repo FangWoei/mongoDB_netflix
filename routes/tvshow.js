@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // import model into router
-const tvshow = require("../models/tvshow");
+const Tvshow = require("../models/tvshow");
 
 /* list all the tvshows */
 router.get("/", async (req, res) => {
@@ -19,14 +19,45 @@ router.get("/", async (req, res) => {
       filter.premiere_year = { $gt: premiere_year }; // { premiere_year: { $gt: release_year } }
     }
   }
-  const list = await tvshow.find(filter);
+  const list = await Tvshow.find(filter);
   res.send(list);
 });
 
-/* get specific tvshow by id */
+/* get specific Tvshow by id */
 router.get("/:id", async (req, res) => {
-  const data = await tvshow.findOne({ _id: req.params.id });
+  const data = await Tvshow.findOne({ _id: req.params.id });
   res.send(data);
 });
+
+/* create new tvshow route */
+router.post("/", async (req, res) => {
+  const newTvshow = new Tvshow({
+    title: req.body.title,
+    creator: req.body.creator,
+    premiere_year: req.body.premiere_year,
+    seasons: req.body.seasons,
+    genre: req.body.genre,
+    rating: req.body.rating,
+  });
+  await newTvshow.save();
+  res.send(newTvshow);
+});
+
+/* update a tvshow */
+router.put("/:id", async (req, res) => {
+  const tvshow_id = req.params.id;
+  const updatedTvshow = await Tvshow.findByIdAndUpdate(tvshow_id, req.body, {
+    new: true,
+  });
+  res.send(updatedTvshow);
+});
+
+/* delete a tvshow */
+router.delete("/:id", async (req, res) => {
+  const tvshow_id = req.params.id;
+  const deletedTvshow = await Tvshow.findByIdAndDelete(tvshow_id);
+  res.send(deletedTvshow);
+});
+
 
 module.exports = router;

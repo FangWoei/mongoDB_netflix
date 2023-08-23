@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 // create an instance of express
 const app = express();
 
+app.use(express.json());
 // MongoDB connection
 mongoose
   .connect(
