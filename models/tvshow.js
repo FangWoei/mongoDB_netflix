@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
+// const reviewSchema = require("./review");
+
 const tvshowSchema = new Schema({
   title: {
     type: String,
@@ -14,8 +16,8 @@ const tvshowSchema = new Schema({
     type: Number,
     required: true,
   },
-  end_year:{
-    type: Number
+  end_year: {
+    type: Number,
   },
   seasons: {
     type: Number,
@@ -29,6 +31,7 @@ const tvshowSchema = new Schema({
     type: Number,
     required: true,
   },
+  // reviews: [reviewSchema],
 });
 
 const tvShow = model("tvshow", tvshowSchema);
